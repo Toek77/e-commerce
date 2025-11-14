@@ -1,85 +1,75 @@
-<script setup lang="ts">
+<script lang="ts">
+import ButtonComponent from './ButtonComponent.vue'
+export default{
+  components: {
+    ButtonComponent
+  },
 
-class PosterItem {
-  img: string;
-  label: string;
-  btt_label: string;
-  btt_color: string;
-  bg_color: string;
-
-  constructor(img: string, label: string, btt_label: string, btt_color: string, bg_color: string) {
-    this.img = img;
-    this.label = label;
-    this.btt_label = btt_label;
-    this.btt_color = btt_color;
-    this.bg_color = bg_color;
+  props: {
+    title: String,
+    bgColor: String,
+    btn_color: String,
+    image_src: String
   }
 }
 
-const item_poster: PosterItem[] = [
-  new PosterItem("onion1.png", "Everyday fresh & clean with our products", "Button", "green", "white"),
-  new PosterItem("milk2.png", "Make your breakfast healthy and easy", "Button", "green", "white"),
-  new PosterItem("vegetable3.png", "The best Organic Products Online", "Button", "green", "white"),
-]
 
 </script>
 
 <template>
   <div class="poster_list" role="list">
-    <div v-for="item in item_poster" class="poster_item" role="listitem" :key="item.label">
+    <div class="poster_item" role="listitem" :style="{backgroundColor: bgColor}">
       <div class="poster_main">
-        <span class="poster_label">{{ item.label }}</span>
-        <ButtonComponent/>
+        <span class="poster_label">{{ title }}</span>
+        <ButtonComponent :bg="btn_color" />
       </div>
-      <img class="poster_img" :src="item.img" alt="Poster image">
-
-      >
+      <img class="poster_img" :src="`http://localhost:3000/${image_src}`" alt="Poster image" />
     </div>
   </div>
-
 </template>
 
 <style scoped>
-.poster_list{
-  display        : flex;
-  flex-direction : row;
-  overflow-x     : scroll;
+.poster_list {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
   scroll-behavior: smooth;
   scrollbar-width: none;
-  gap            : 24px;
-  margin-top     : 24px;
-}
-.poster_main {
-  margin-left    : 24px;
-  display        : flex;
-  flex-direction : column;
-  align-items    : flex-start;
-  justify-content: center;
-  height         : 100%;
-  width          : 100%;
+  gap: 24px;
+  margin-top: 24px;
 }
 
-.poster_label{
+.poster_item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 200px;
+  width: 380px;
+  min-width: 300px;
+  background: white;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+}
+
+.poster_main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  margin-left: 24px;
+}
+
+
+.poster_img {
+  max-width: 200px;
+  max-height: 200px;
+}
+
+.poster_label {
   font-size: 16px;
   font-weight: bold;
   color: #181818;
   margin-bottom: 16px;
 }
-
-.poster_item {
-  display        : flex;
-  flex-direction : row;
-  align-items    : center;
-  height         : 200px;
-  width          : 380px;
-  min-width      : 300px;
-  background     : white;
-  border-radius  : 8px;
-}
-
-.poster_img {
-  max-width: 150px;
-  max-height: 150px;
-}
-
 </style>
