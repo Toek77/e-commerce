@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { onMounted, ref, type Ref } from 'vue';
+
 
 class PosterItem {
   img: string;
@@ -16,11 +18,33 @@ class PosterItem {
   }
 }
 
-const item_poster: PosterItem[] = [
-  new PosterItem("onion1.png", "Everyday fresh & clean with our products", "Button", "green", "white"),
-  new PosterItem("milk2.png", "Make your breakfast healthy and easy", "Button", "green", "white"),
-  new PosterItem("vegetable3.png", "The best Organic Products Online", "Button", "green", "white"),
-]
+let item_poster: Ref<PosterItem[]> = ref([])
+
+
+async function load_promotion(){
+  try{
+    const response = await fetch("http://localhost:3000/api/promotions");
+     const data = await response.json();
+    item_poster.value = data.map((promotion: any) =>
+        new PosterItem(
+          promotion.image || "imgs/cate_item_1.png",
+          promotion.title || "Promotion",
+          "Shop Now",
+          promotion.buttonColor || "red",
+          promotion.color || "white",
+          
+        )
+      );
+
+      // console.log(item_poster);
+  }catch(err){
+    console.error(err);
+  }
+}
+
+onMounted(async () => {
+  await load_promotion();
+})
 
 </script>
 
@@ -31,7 +55,7 @@ const item_poster: PosterItem[] = [
         <span class="poster_label">{{ item.label }}</span>
         <ButtonComponent/>
       </div>
-      <img class="poster_img" :src="item.img" alt="Poster image">
+      <img class="poster_img" :src="`http://localhost:3000/${item.img}`" alt="Poster image">
 
       >
     </div>
@@ -57,6 +81,7 @@ const item_poster: PosterItem[] = [
   justify-content: center;
   height         : 100%;
   width          : 100%;
+  
 }
 
 .poster_label{
@@ -67,6 +92,7 @@ const item_poster: PosterItem[] = [
 }
 
 .poster_item {
+  border: 2px solid lightgray;
   display        : flex;
   flex-direction : row;
   align-items    : center;

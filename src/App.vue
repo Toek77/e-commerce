@@ -1,13 +1,44 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+
+import { Ref } from 'vue';
+import 
+const items : Ref<ProductCardProps[]> = ref([]);
+
+async function load_cate() {
+  try {
+    const res = await fetch("http://localhost:3000/api/products");
+    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+
+    const response: ProductCardProps[] = await res.json(); // parse JSON here
+    items.value = response;
+
+    console.log("Loading categories...");
+
+
+  } catch (err) {
+    console.error("Error:", err);
+  }
+}
+
+
+</script>
 
 <template>
   <main>
+    <MenuComponent/>
     <CategoryComponent/>
     <PosterComponent/>
+    <MenuComponent/>
+    <productComponent/>
+    
   </main>
 </template>
 
-<style scoped>
+<style>
+
+body{
+  background: white;
+}
 header {
   line-height : 1.5;
 }

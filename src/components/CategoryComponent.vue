@@ -1,49 +1,48 @@
 <script setup lang="ts">
+import type { Ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
-const color_set = [
-  {bg: '#E8F9EF', hover: '#c8f1dc'},
-  {bg: '#FFF0E6', hover: '#ffd8c2'},
-  {bg: '#EAFEEC', hover: '#d4f8da'},
-  {bg: '#FFECEF', hover: '#ffd6dc'},
-  {bg: '#FFF8E7', hover: '#ffefc8'},
-  {bg: '#F1EDFF', hover: '#e2d9ff'},
-  {bg: '#EBFAEE', hover: '#d5f4dc'},
-  {bg: '#EAF6FF', hover: '#d2ecff'},
-  {bg: '#FFF3E0', hover: '#ffe3b8'}
-]
 
-class CategoryItem {
-  img: string;
-  name: string;
-  count: number;
-  prefix: string;
-  color: string;
-  hover_color: string;
-
-  constructor(img: string, name: string, count: number, prefix: string = "item(s)", color: string | null = null, hover_color: string | null = null) {
-    const random_color = color_set[Math.floor(Math.random() * color_set.length)]!;
-    this.img = img;
-    this.name = name;
-    this.count = count;
-    this.prefix = prefix;
-    this.color = color ?? random_color.bg;
-    this.hover_color = hover_color ?? random_color.hover;
-  }
-
+interface CategoryItem {
+      id: string;
+    name: string,
+    productCount: number,
+    color: string,
+    image: string,
+    // group: null,
+    createdAt: string,
+    updatedAt: string
 }
 
-const item_category: CategoryItem[] = [
-  new CategoryItem("burger.png", "Category 1", 10, "item(s)"),
-  new CategoryItem("peach.png", "Category 2", 10,),
-  new CategoryItem("kiwi.png", "Category 3", 10,),
-  new CategoryItem("apple.png", "Category 4", 10,),
-  new CategoryItem("snack.png", "Category 5", 10,),
-  new CategoryItem("blackplum.png", "Category 6", 10,),
-  new CategoryItem("vegetable.png", "Category 7", 10,),
-  new CategoryItem("headphone.png", "Category 8", 10,),
-  new CategoryItem("cake&milk.png", "Category 9", 10,),
-  new CategoryItem("orange.png", "Category 10", 10,),
-]
+
+
+
+const item_category: Ref<CategoryItem[]> = ref([]);
+
+async function load_cate() {
+  try {
+    const res = await fetch("http://localhost:3000/api/categories");
+    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+
+    const response: CategoryItem[] = await res.json(); // parse JSON here
+    item_category.value = response;
+
+    console.log("Loading categories...");
+    console.log(item_category.value);
+
+  } catch (err) {
+    console.error("Error:", err);
+  }
+}
+
+function parse_img(input: string): string{
+  return "http://localhost:3000/" + input;
+}
+
+
+onMounted(async () => {
+  await load_cate();
+})
 
 
 </script>
@@ -56,11 +55,11 @@ const item_category: CategoryItem[] = [
       role="menuitem"
       type="button"
       class="category_btt"
-      :style="{ '--bg': item.color, '--hover': item.hover_color }"
+      :style="{ '--bg': item.color }"
     >
-      <img class="category_img" :src="item.img" alt="Category image">
+      <img class="category_img" :src="parse_img(item.image)" alt="Category image">
       <span class="category_name">{{ item.name }}</span>
-      <span class="category_count">{{ item.count }} {{ item.prefix }}</span>
+      <span class="category_count">{{ item.productCount }} items </span>
 
 
     </button>
@@ -81,6 +80,7 @@ const item_category: CategoryItem[] = [
 }
 
 .category_btt {
+  border: 2px solid lightgray;
   padding         : 5px;
   min-width       : 100px;
   width           : 100px;
@@ -91,13 +91,9 @@ const item_category: CategoryItem[] = [
   justify-content : center;
   align-items     : center;
   background      : var(--bg);
-  border          : 1px solid rgba(0, 0, 0, 0.06);
+
   border-radius   : 8px;
 
-}
-
-.category_btt:hover {
-  background : var(--hover);
 }
 
 .category_img {
