@@ -62,4 +62,12 @@ header {
     flex-wrap: wrap;
   }
 }
+
+.product-contatiner{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 20px 10px;
+}
 </style>

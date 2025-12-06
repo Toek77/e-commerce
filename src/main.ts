@@ -24,7 +24,7 @@ import ButtonComponent from "@/components/ButtonComponent.vue";
 import MenuComponent from "@/components/MenuComponent.vue";
 import ProductComponent from "@/components/ProductComponent.vue";
 
-import router from './router'
+// import router from './router'
 
 createApp(App)
   .component("CategoryComponent",CategoryComponent)
@@ -32,6 +32,5 @@ createApp(App)
   .component("ButtonComponent",ButtonComponent)
   .component("MenuComponent", MenuComponent)
   .component("ProductComponent", ProductComponent)
-  .use(router)
+  // .use(router)
   .mount('#app')
-  
