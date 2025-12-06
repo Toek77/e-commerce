@@ -30,8 +30,9 @@ onMounted(() => {
     <PosterComponent />
     <MenuComponent />
 
-    <!-- If productComponent displays products, you MUST pass items -->
-    <ProductComponent :items="items" />
+    <div class="product-contatiner">
+      <ProductComponent v-for="item in items" :key="item.id" :product="item" />
+    </div>
   </main>
 </template>
 
