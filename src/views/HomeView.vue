@@ -1,6 +1,12 @@
-<script setup lang="ts">
+< setup lang="ts">
 import { ref, Ref, onMounted } from "vue";
 import type { ProductCardProps } from "./types/ProductCardProps";
+
+import MenuComponent from '@/components/MenuComponent.vue'
+import CategoryComponent from '@/components/CategoryComponent.vue'
+import PosterComponent from '@/components/PosterComponent.vue'
+import ProductComponent from '@/components/ProductComponent.vue'
+
 
 const items: Ref<ProductCardProps[]> = ref([]);
 
@@ -21,7 +27,7 @@ async function load_cate() {
 onMounted(() => {
   load_cate();
 });
-</script>
+</scri>
 
 <template>
   <main>

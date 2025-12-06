@@ -22,8 +22,9 @@ import CategoryComponent from "@/components/CategoryComponent.vue";
 import PosterComponent from "@/components/PosterComponent.vue";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import MenuComponent from "@/components/MenuComponent.vue";
-import ProductComponent from "@/components/productComponent.vue";
+import ProductComponent from "@/components/ProductComponent.vue";
 
+import router from './router'
 
 createApp(App)
   .component("CategoryComponent",CategoryComponent)
@@ -31,4 +32,6 @@ createApp(App)
   .component("ButtonComponent",ButtonComponent)
   .component("MenuComponent", MenuComponent)
   .component("ProductComponent", ProductComponent)
+  .use(router)
   .mount('#app')
+  

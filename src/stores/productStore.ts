@@ -11,7 +11,7 @@ export const useProductStore = defineStore('product', {
 
   actions: {
     async loadData() {
-      const [groups, promos, cats, products] = await Promise.all([
+      const [groups, promos, cats , products] = await Promise.all([
         axios.get('http://localhost:3000/api/groups'),
         axios.get('http://localhost:3000/api/promotions'),
         axios.get('http://localhost:3000/api/categories'),
