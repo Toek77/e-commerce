@@ -1,12 +1,12 @@
-< setup lang="ts">
+<script setup lang="ts">
 import { ref, Ref, onMounted } from "vue";
 import type { ProductCardProps } from "./types/ProductCardProps";
 
-import MenuComponent from '@/components/MenuComponent.vue'
-import CategoryComponent from '@/components/CategoryComponent.vue'
-import PosterComponent from '@/components/PosterComponent.vue'
-import ProductComponent from '@/components/ProductComponent.vue'
-
+import MenuComponent from "@/components/MenuComponent.vue";
+import CategoryComponent from "@/components/CategoryComponent.vue";
+import PosterComponent from "@/components/PosterComponent.vue";
+import ProductComponent from "@/components/ProductComponent.vue";
+import type ShowCase from "@/components/ShowCase.vue";
 
 const items: Ref<ProductCardProps[]> = ref([]);
 
@@ -27,17 +27,20 @@ async function load_cate() {
 onMounted(() => {
   load_cate();
 });
-</scri>
+</script>
+
 
 <template>
+  <ShowCase />
   <main>
-    <MenuComponent />
+    <MenuComponent label="Featured Categories" />
     <CategoryComponent />
     <PosterComponent />
-    <MenuComponent />
+    <MenuComponent label="Popular Products"/>
 
-    <!-- If productComponent displays products, you MUST pass items -->
-    <ProductComponent :items="items" />
+    <div class="product-contatiner">
+      <ProductComponent v-for="item in items" :key="item.id" :product="item" />
+    </div>
   </main>
 </template>
 
@@ -45,19 +48,20 @@ onMounted(() => {
 body {
   background: white;
 }
-header {
-  line-height: 1.5;
-}
+
 .logo {
   display: block;
   margin: 0 auto 2rem;
 }
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
+.product-contatiner{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 20px 10px;
+}
+
+
   .logo {
     margin: 0 2rem 0 0;
   }
@@ -66,5 +70,5 @@ header {
     place-items: flex-start;
     flex-wrap: wrap;
   }
-}
+
 </style>

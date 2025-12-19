@@ -1,6 +1,10 @@
 <script setup lang="ts">
+import Categories from '@/views/Categories.vue';
 import type { Ref } from 'vue';
 import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 
 interface CategoryItem {
@@ -13,7 +17,6 @@ interface CategoryItem {
     createdAt: string,
     updatedAt: string
 }
-
 
 
 
@@ -44,11 +47,15 @@ onMounted(async () => {
   await load_cate();
 })
 
+function goToCategory(categoryId: string) {
+  router.push(`/categories/${categoryId}`);
+}
+
 
 </script>
 
 <template>
-  <div class="category_list" role="list">
+  <button class="category_list" role="list">
     <button
       v-for="item in item_category"
       :key="item.name"
@@ -56,6 +63,7 @@ onMounted(async () => {
       type="button"
       class="category_btt"
       :style="{ '--bg': item.color }"
+      @click="goToCategory(item.id)"
     >
       <img class="category_img" :src="parse_img(item.image)" alt="Category image">
       <span class="category_name">{{ item.name }}</span>
@@ -64,7 +72,7 @@ onMounted(async () => {
 
     </button>
 
-  </div>
+  </button>
 
 </template>
 
@@ -93,7 +101,12 @@ onMounted(async () => {
   background      : var(--bg);
 
   border-radius   : 8px;
+  transition: transform 0.2s, border-color 0.2s;
+}
 
+.category_btt:hover {
+  border-color: #4CAF50;
+  transform: translateY(-2px);
 }
 
 .category_img {

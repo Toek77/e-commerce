@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref, type Ref } from 'vue';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 
 class PosterItem {
   img: string;
@@ -9,7 +11,13 @@ class PosterItem {
   btt_color: string;
   bg_color: string;
 
-  constructor(img: string, label: string, btt_label: string, btt_color: string, bg_color: string) {
+  constructor(
+    img: string,
+    label: string,
+    btt_label: string,
+    btt_color: string,
+    bg_color: string
+  ) {
     this.img = img;
     this.label = label;
     this.btt_label = btt_label;
@@ -18,49 +26,57 @@ class PosterItem {
   }
 }
 
-let item_poster: Ref<PosterItem[]> = ref([])
+const item_poster: Ref<PosterItem[]> = ref([]);
 
-
-async function load_promotion(){
-  try{
+async function load_promotion() {
+  try {
     const response = await fetch("http://localhost:3000/api/promotions");
-     const data = await response.json();
-    item_poster.value = data.map((promotion: any) =>
-        new PosterItem(
-          promotion.image || "imgs/cate_item_1.png",
-          promotion.title || "Promotion",
-          "Shop Now",
-          promotion.buttonColor || "red",
-          promotion.color || "white",
-          
-        )
-      );
+    const data = await response.json();
 
-      // console.log(item_poster);
-  }catch(err){
+    item_poster.value = data.map((promotion: any) =>
+      new PosterItem(
+        promotion.image || "imgs/cate_item_1.png",
+        promotion.title || "Promotion",
+        "Shop Now",
+        promotion.buttonColor || "red",
+        promotion.color || "white"
+      )
+    );
+  } catch (err) {
     console.error(err);
   }
 }
 
-onMounted(async () => {
-  await load_promotion();
-})
+function goToProductDetails() {
+  router.push('/product');
+}
 
+onMounted(() => {
+  load_promotion();
+});
 </script>
 
 <template>
   <div class="poster_list" role="list">
-    <div v-for="item in item_poster" class="poster_item" role="listitem" :key="item.label">
+    <div
+      v-for="item in item_poster"
+      :key="item.label"
+      class="poster_item"
+      role="listitem"
+      @click="goToProductDetails"
+    >
       <div class="poster_main">
         <span class="poster_label">{{ item.label }}</span>
-        <ButtonComponent/>
+        <ButtonComponent />
       </div>
-      <img class="poster_img" :src="`http://localhost:3000/${item.img}`" alt="Poster image">
 
-      >
+      <img
+        class="poster_img"
+        :src="`http://localhost:3000/${item.img}`"
+        alt="Poster image"
+      />
     </div>
   </div>
-
 </template>
 
 <style scoped>

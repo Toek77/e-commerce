@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import {computed, onMounted, ref, type Ref} from "vue";
+import { computed, onMounted, ref, type Ref } from "vue";
+import { RouterLink } from 'vue-router';
 
 export interface ProductCardProps {
   id: number;
@@ -10,21 +11,21 @@ export interface ProductCardProps {
   price: number;
   promotionAsPercentage?: number;
   size: string;
-  instock : number | null;
-  countSold : number | null;
-  group : string | null;
-  createdAt : Date;
-  updatedAt : Date;
+  instock: number | null;
+  countSold: number | null;
+  group: string | null;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-function extract_image(img: string) : string {
+function extract_image(img: string): string {
   const arr = img.replace(/[\[\]\s]/g, '').split(',');
   console.log("arr : " + arr);
   return arr[0]!.replace('"', "").replace('"', "");
 }
 
-function  calculateDiscountedPrice(original: number, discount: number | null) : string {
-  return (original - (original * (discount ?? 0))).toFixed(2);
+function calculateDiscountedPrice(original: number, discount: number | null): string {
+  return (original - (original * (discount ?? 0) / 100)).toFixed(2); // Assuming discount is percentage, divide by 100
 }
 
 const props = defineProps<{
@@ -54,23 +55,20 @@ function increaseQuantity() {
   quantity.value++;
 }
 
-
-
-function image_url(input : string) :string {
-    return "http://localhost:3000/" + input;
+function image_url(input: string): string {
+  return "http://localhost:3000/" + input;
 }
-
 </script>
 
 <template>
-  <div class="product-card">
+  <RouterLink :to="`/ProductDetails/${product.id}`" class="product-card">
     <div class="product-image">
       <span v-if="product.promotionAsPercentage" class="discount-badge">{{ product.promotionAsPercentage }}%</span>
       <img :src="image_url(extract_image(product.image))" :alt="product.name" />
     </div>
     <div class="product-info">
-<!--      <div class="product-brand">{{ product.brand }}</div>-->
-<!--      <div class="product-category">{{ product.categoryId }}</div>-->
+      <!--      <div class="product-brand">{{ product.brand }}</div>-->
+      <!--      <div class="product-category">{{ product.categoryId }}</div>-->
       <h3 class="product-name">{{ product.name }}</h3>
       <div class="product-rating">
         <span class="stars">
@@ -81,21 +79,21 @@ function image_url(input : string) :string {
       <div class="product-weight">{{ product.size }}</div>
       <div class="product-footer">
         <div class="product-price">
-          <span class="current-price">${{ product.price.toFixed(2) }}</span>
-          <span v-if="product.promotionAsPercentage" class="original-price">${{calculateDiscountedPrice(product.price, product.promotionAsPercentage) }}</span>
+          <span class="current-price">${{ product.promotionAsPercentage ? calculateDiscountedPrice(product.price, product.promotionAsPercentage) : product.price.toFixed(2) }}</span>
+          <span v-if="product.promotionAsPercentage" class="original-price">${{ product.price.toFixed(2) }}</span>
         </div>
-        <button v-if="!isAdded || quantity == 0" class="add-to-cart-btn" @click="toggleCart">
+        <button v-if="!isAdded || quantity == 0" class="add-to-cart-btn" @click.stop="toggleCart">
           Add +
         </button>
         <div v-else class="quantity-selector">
           <span class="quantity-display">{{ quantity }}</span>
           <div class="qty-buttons">
-            <button class="qty-btn increase" @click="increaseQuantity">
+            <button class="qty-btn increase" @click.stop="increaseQuantity">
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                 <polyline points="18 15 12 9 6 15"></polyline>
               </svg>
             </button>
-            <button class="qty-btn decrease" @click="decreaseQuantity">
+            <button class="qty-btn decrease" @click.stop="decreaseQuantity">
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                 <polyline points="6 9 12 15 18 9"></polyline>
               </svg>
@@ -104,7 +102,7 @@ function image_url(input : string) :string {
         </div>
       </div>
     </div>
-  </div>
+  </RouterLink>
 </template>
 
 <style scoped>
@@ -114,7 +112,15 @@ function image_url(input : string) :string {
   border-radius: 8px;
   border: 1px solid #e4e4e4;
   overflow: hidden;
-  transition: transform 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .product-image {
@@ -132,7 +138,7 @@ function image_url(input : string) :string {
   background: #00b853;
   color: white;
   padding: 4px 12px;
-  border-radius: 0  15px 15px 0;
+  border-radius: 0 15px 15px 0;
   font-weight: 600;
   font-size: 14px;
 }

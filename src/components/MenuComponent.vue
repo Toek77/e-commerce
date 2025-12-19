@@ -1,71 +1,8 @@
-<!-- <template>
-  <div class="category-menu">
-    <button
-      v-for="(item, index) in items"
-      :key="index"
-      @click="$emit('select', item)"
-      :class="['tab', item === active ? 'active' : '']"
-    >
-      {{ item }}
-    </button>
-  </div>
-</template>
-
-<script setup lang = "ts">
-    defineProps({
-        items: Array, 
-        active: String})
-    defineEmits(["select"])
-</script>
-
-<style scoped>
-.menu-container {
-  display: flex;
-  gap: 16px;
-  padding: 12px 16px;
-  overflow-x: auto;
-  flex-wrap: wrap;
-}
-
-.info {
-  padding: 8px 20px;
-  font-size: 16px;
-  color: #555;
-  cursor: pointer;
-  background: none;
-  border: none;
-}
-
-.info.active {
-  font-weight: bold;
-  border-bottom: 2px solid #4caf50;
-  color: #4caf50;
-}
-
-.menu-item.active::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 30px;
-  height: 2px;
-  background: #3BB77E;
-}
-
-</style> -->
-
-
 <script setup lang="ts">
 import { ref } from 'vue';
-
-const props = withDefaults(defineProps<ComponentAttribute>(), {
-  label: 'Featured Categories'
-})
-
-interface ComponentAttribute {
-  label?: string;
-}
+const props = defineProps<{
+  label: string
+}>();
 
 const categories = ref([
   'All',

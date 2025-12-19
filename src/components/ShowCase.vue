@@ -1,92 +1,112 @@
-<script setup>
-import { ref } from 'vue'
-
-const email = ref('')
-
-const subscribe = () => {
-  if (email.value) {
-    alert(`Thank you! Subscribed with: ${email.value}`)
-    email.value = ''
-  }
-}
+<script setup lang="ts">
 </script>
 
 <template>
-  <div class="showcase">
-    <div class="content">
-      <h1>Don't miss amazing<br>grocery deals</h1>
-      <p>Sign up for the daily newsletter</p>
-      <form @submit.prevent="subscribe" class="newsletter-form">
-        <input
-          v-model="email"
-          type="email"
-          placeholder="Your email address"
-          required
-        />
-        <button type="submit">Subscribe</button>
-      </form>
+  <section class="showcase">
+    <div class="container">
+      <div class="text">
+        <h1>Don’t miss amazing grocery deals</h1>
+        <p>Sign up for the daily newsletter</p>
+
+        <div class="subscribe">
+          <input type="email" placeholder=" 🖂  Your email address" />
+          <button>Subscribe</button>
+        </div>
+      </div>
+
+      <img src="/banner.png" alt="Grocery banner" />
     </div>
-    <div class="image">
-      <img src="/apples-bag.jpg" alt="Fresh groceries" />
-    </div>
-  </div>
+  </section>
 </template>
 
 <style scoped>
 .showcase {
+  width: 100%;
+  background: #fff4dc;
+  padding: 40px 0;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 32px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #fff8e1;
-  border: 4px solid #8d6e63;
-  border-radius: 12px;
-  overflow: hidden;
-  margin: 20px 0;
-  padding: 40px;
   gap: 40px;
 }
-.content h1 {
-  font-size: 3rem;
-  color: #333;
-  line-height: 1.2;
-  margin-bottom: 16px;
-}
-.content p {
-  color: #666;
-  margin-bottom: 24px;
-}
-.newsletter-form {
-  display: flex;
-  gap: 10px;
-  max-width: 400px;
-}
-.newsletter-form input {
+
+.text {
   flex: 1;
-  padding: 14px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 16px;
+  max-width: 50%;
+  color: #333;
 }
-.newsletter-form button {
-  padding: 14px 30px;
-  background: #4caf50;
-  color: white;
+
+.text h1 {
+  font-size: 3.5rem;
+  margin-bottom: 10px;
+  font-family: quicksand, sans-serif;
+}
+
+.text p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  font-family: quicksand, sans-serif;
+}
+
+.subscribe {
+  display: flex;
+  margin-top: 20px;
+}
+
+.subscribe input {
+  padding: 10px;
+  border-radius: 20px 0 0 20px;
   border: none;
-  border-radius: 8px;
+  flex: 1;
+}
+
+.subscribe button {
+  padding: 10px 20px;
+  border-radius: 0 20px 20px 0;
+  border: none;
+  background: #15af41;
+  color: white;
   cursor: pointer;
 }
-.newsletter-form button:hover {
-  background: #388e3c;
+.subscribe button:hover {
+  background: #0c9a11;
 }
-.image img {
-  max-width: 100%;
+
+img {
+  flex: 1;
+  max-width: 50%;
   height: auto;
+  border-radius: 12px;
 }
+
+/* Responsive: stack on mobile */
 @media (max-width: 768px) {
-  .showcase {
+  .container {
     flex-direction: column;
     text-align: center;
+    gap: 20px;
   }
-  .content h1 { font-size: 2.2rem; }
+
+  .text {
+    max-width: 100%;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  .text h1 {
+    font-size: 2rem;
+  }
+
+  .text p {
+    font-size: 1rem;
+  }
 }
 </style>
