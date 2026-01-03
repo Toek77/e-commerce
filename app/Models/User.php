@@ -45,4 +45,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // the updated user model 
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
 }
